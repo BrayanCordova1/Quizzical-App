@@ -1,50 +1,177 @@
-*
-{
-  box-sizing: border-box;
-}
-
-#root
-{
-  width: 100%;
-  height: 100%;
-}
-
-body
-{
-  font-family: "Inter", sans-serif;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #010101;
-  color: white;
-  font-size: 1rem;
-}
-
+/* --- Base Typography --- */
 h1,
 h2,
 h3,
 h4
 {
   font-family: "Karla", sans-serif;
+  font-weight: bold;
   margin: 0;
+  transition: font-size 300ms;
+}
+
+p,
+.xs,
+.sm,
+.lg,
+.xl
+{
+  margin: 0;
+  transition: font-size 300ms;
+}
+
+/* --- Typographic Scale (Mobile First) --- */
+h1
+{
+  font-size: 1.5rem;
+}
+
+h2
+{
+  font-size: 1.25rem;
+}
+
+h3
+{
+  font-size: 0.875rem;
+}
+
+h4
+{
+  font-size: 0.75rem;
 }
 
 p
 {
-  margin: 0;
+  font-size: 0.875rem;
 }
 
-.quizStart
+.xs,
+.sm
+{
+  font-size: 0.75rem;
+}
+
+.lg
+{
+  font-size: 1rem;
+}
+
+.xl
+{
+  font-size: 1.125rem;
+}
+
+/* --- Utility Classes --- */
+.rounded
+{
+  border-radius: 4px;
+}
+
+/* --- App Layout --- */
+main
 {
   display: flex;
   flex-direction: column;
-  justify-items: center;
-  align-items: center;
-  margin: auto;
-  gap: 1rem;
+  text-align: center;
 }
 
-.quizStart h1
+/* --- Media Queries for Typography & Utilities --- */
+@media (min-width: 48rem)
 {
-  font-size: 2rem
+  .rounded
+  {
+    border-radius: 6px;
+  }
+}
+
+@media (min-width: 64rem)
+{
+  h1
+  {
+    font-size: 2.25rem;
+  }
+
+  h2
+  {
+    font-size: 1.875rem;
+  }
+
+  h3
+  {
+    font-size: 1.5rem;
+  }
+
+  p
+  {
+    font-size: 1.125rem;
+  }
+
+  .sm
+  {
+    font-size: 0.875rem;
+  }
+
+  .lg
+  {
+    font-size: 1.25rem;
+  }
+
+  .xl
+  {
+    font-size: 1.5rem;
+  }
+
+  .rounded
+  {
+    border-radius: 8px;
+  }
+}
+
+@media (min-width: 80rem)
+{
+  h1
+  {
+    font-size: 3.75rem;
+  }
+
+  h2
+  {
+    font-size: 2.25rem;
+  }
+
+  h3
+  {
+    font-size: 1.875rem;
+  }
+
+  h4
+  {
+    font-size: 1rem;
+  }
+
+  p
+  {
+    font-size: 1.5rem;
+  }
+
+  .xs
+  {
+    font-size: 0.875rem;
+  }
+
+  .sm
+  {
+    font-size: 1.25rem;
+  }
+
+  .lg
+  {
+    font-size: 1.875rem;
+  }
+
+  .xl
+  {
+    font-size: 2.25rem;
+  }
 }
