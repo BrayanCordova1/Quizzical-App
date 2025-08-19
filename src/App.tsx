@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import './App.css'
-import StarMenu from './components/StartMenu'
-import Questions from "./components/Questions"
+import Button from './components/Button'
 
 function App() {
   const [game, setGame] = useState(false)
   const [questionsData, setQuestionsData] = useState()
-  const url = import.meta.env.url
 
   async function startGame() {
     const res = await fetch("https://opentdb.com/api.php?amount=10&type=multiple")
@@ -17,8 +15,11 @@ function App() {
 
   return (
     <main>
-      {!game && <StarMenu onClick={startGame} />}
-      {game && <Questions data={questionsData} />}
+      <h1>Quizzical</h1>
+      <p>¿Estás listo para responder algunas preguntas?</p>
+      <Button type='primary'>
+        Iniciar quiz
+      </Button>
     </main>
   )
 }

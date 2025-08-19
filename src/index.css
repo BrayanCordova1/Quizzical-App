@@ -9,6 +9,18 @@
 {
   --text-color: #FAFAFA;
   --background-color: #171717;
+  --blue-950: #162456;
+  --blue-800: #193CB8;
+  --blue-600: #155DFC;
+  --blue-500: #2B7FFF;
+  --red-900: #82181A;
+  --red-800: #9F0712;
+  --red-700: #C10007;
+  --red-500: #FB2C36;
+  --neutral-700: #404040;
+  --neutral-600: #525252;
+  --neutral-500: #737373;
+  --neutral-300: #D4D4D4;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
