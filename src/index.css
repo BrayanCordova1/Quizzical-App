@@ -17,14 +17,22 @@
   --red-800: #9F0712;
   --red-700: #C10007;
   --red-500: #FB2C36;
+  --neutral-900: #171717;
   --neutral-700: #404040;
   --neutral-600: #525252;
   --neutral-500: #737373;
   --neutral-300: #D4D4D4;
+  --neutral-50: #FAFAFA;
+  --yellow-400: #FDC700;
+  --green-500: #00C950;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 body

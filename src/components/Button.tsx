@@ -7,7 +7,7 @@ type ButtonProps = {
 
 export default function Button({ onClick, children, type = "primary", state = "default" }: ButtonProps) {
   return (
-    <button disabled={state === "disabled"} onClick={onClick} className={`btn-${type} rounded`}>
+    <button disabled={state === "disabled"} onClick={onClick} className={`btn-${type} rounded base`}>
       {children}
     </button>
   )
