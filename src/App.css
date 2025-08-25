@@ -200,6 +200,7 @@ button
   border: 1px solid var(--neutral-700);
   text-align: left;
   transition: all 300ms;
+  background: none;
 }
 
 .answer span
