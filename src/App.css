@@ -173,6 +173,60 @@ button
   background-color: var(--red-900);
 }
 
+.tag
+{
+  padding: 6px 10px;
+  background-color: var(--blue-500);
+}
+
+.tag-normal
+{
+  background-color: var(--yellow-400);
+}
+
+.tag-hard
+{
+  background-color: var(--red-500);
+}
+
+.tag-easy
+{
+  background-color: var(--green-500);
+}
+
+.answer
+{
+  padding: 12px 20px;
+  border: 1px solid var(--neutral-700);
+  text-align: left;
+  transition: all 300ms;
+}
+
+.answer span
+{
+  color: var(--blue-400)
+}
+
+.answer:hover,
+.answer:focus
+{
+  color: var(--neutral-50);
+  background-color: var(--blue-400);
+}
+
+.answer:hover span,
+.answer:focus span
+{
+  color: var(--neutral-50)
+}
+
+.answeractive,
+.answer:active
+{
+  background-color: var(--blue-600);
+  color: var(--neutral-50);
+}
+
 /* --- Forms ---*/
 form
 {
