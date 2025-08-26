@@ -5,8 +5,8 @@ type TagProps = {
 
 export default function Tag({ children, difficulty }: TagProps) {
   return (
-    <button className={`tag ${difficulty ? `tag-${difficulty}` : ''} rounded xs bold`}>
+    <div className={`tag ${difficulty ? `tag-${difficulty}` : ''} rounded xs bold`}>
       {children}
-    </button>
+    </div>
   )
 }
