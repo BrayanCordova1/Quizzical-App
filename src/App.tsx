@@ -7,7 +7,7 @@ import Answer from './components/Aswer'
 function App() {
   type Question = {
     type: string
-    difficulty: string
+    difficulty: 'easy' | 'medium' | 'hard'
     category: string
     question: string
     correct_answer: string
@@ -15,18 +15,31 @@ function App() {
   }
 
   type QuestionsData = {
+    response_code: number
     results: Question[]
   }
 
-  const [game, setGame] = useState(false)
-  const [questionsData, setQuestionsData] = useState<QuestionsData | undefined>()
+  const [game, setGame] = useState(true)
+  const [question, setQuestion] = useState(1)
+  const [questionData, setQuestionData] = useState<QuestionsData | null>({ "response_code": 0, "results": [{ "type": "multiple", "difficulty": "easy", "category": "Entertainment: Television", "question": "Who played the Waitress in the Spam sketch of &quot;Monty Python&#039;s Flying Circus&quot;?", "correct_answer": "Terry Jones", "incorrect_answers": ["Eric Idle", "Graham Chapman", "John Cleese"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "Which character was introduced to the Super Smash Bros franchise in Super Smash Bros Melee?", "correct_answer": "Sheik", "incorrect_answers": ["Samus", "Lucas", "Mega Man"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "Who is the leader of the Brotherhood of Nod in the Command and Conquer series?", "correct_answer": "Kane", "incorrect_answers": ["Joseph Stalin", "CABAL", "Yuri"] }, { "type": "multiple", "difficulty": "hard", "category": "History", "question": "In the year 1900, what were the most popular first names given to boy and girl babies born in the United States?", "correct_answer": "John and Mary", "incorrect_answers": ["Joseph and Catherine", "William and Elizabeth", "George and Anne"] }, { "type": "multiple", "difficulty": "hard", "category": "Entertainment: Comics", "question": "What are the Three Virtues of Bionicle?", "correct_answer": "Unity, Duty, Destiny", "incorrect_answers": ["Build, Play, Change", "Work, Play, Live", "Forge, Build, Fight"] }, { "type": "multiple", "difficulty": "hard", "category": "Entertainment: Video Games", "question": "In the alternate timeline in Mortal Kombat, which character was the one to slaughter the Shirai Ryu clan?", "correct_answer": "Quan Chi", "incorrect_answers": ["Sub-Zero", "Sektor", "Shang Tsung"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "Who is the main antagonist in the Portal franchise?", "correct_answer": "GLaDOS", "incorrect_answers": ["Chell", "Wheatley", "Rick"] }, { "type": "multiple", "difficulty": "hard", "category": "Geography", "question": "What city is known as the Rose Capital of the World?", "correct_answer": "Tyler, Texas", "incorrect_answers": ["San Diego, California", "Miami, Florida", "Anaheim, California"] }, { "type": "multiple", "difficulty": "easy", "category": "Sports", "question": "This Canadian television sportscaster is known for his &quot;Hockey Night in Canada&quot; role, a commentary show during hockey games.", "correct_answer": "Don Cherry", "incorrect_answers": ["Don McKellar", "Don Taylor ", "Donald Sutherland"] }, { "type": "multiple", "difficulty": "hard", "category": "Sports", "question": "Which of these Russian cities did NOT contain a stadium that was used in the 2018 FIFA World Cup?", "correct_answer": "Vladivostok", "incorrect_answers": ["Rostov-on-Don", "Yekaterinburg", "Kaliningrad"] }] })
 
   async function startGame(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
-    const data = { "results": [{ "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "What is the name of Team Fortress 2&#039;s Heavy Weapons Guy&#039;s minigun?", "correct_answer": "Sasha", "incorrect_answers": ["Betty", "Anna", "Diana"] }, { "type": "multiple", "difficulty": "hard", "category": "Geography", "question": "What is the name of the formerly rich fishing grounds off the island of Newfoundland, Canada?", "correct_answer": "Grand Banks", "incorrect_answers": ["Great Barrier Reef", "Mariana Trench", "Hudson Bay"] }, { "type": "multiple", "difficulty": "medium", "category": "Entertainment: Books", "question": "In the &quot;The Hobbit&quot;, who kills Smaug?", "correct_answer": "Bard", "incorrect_answers": ["Bilbo Baggins", "Gandalf the Grey", "Frodo"] }, { "type": "multiple", "difficulty": "medium", "category": "Entertainment: Music", "question": "According to a Beatles song, who kept her face in a jar by the door?", "correct_answer": "Eleanor Rigby", "incorrect_answers": ["Loretta Martin", "Molly Jones", "Lady Madonna"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Music", "question": "Who is the lead singer of the band Coldplay?", "correct_answer": "Chris Martin", "incorrect_answers": ["Chris Isaak", "Chris Wallace", "Chris Connelly"] }, { "type": "multiple", "difficulty": "medium", "category": "Entertainment: Video Games", "question": "What was the main currency in Club Penguin?", "correct_answer": "Coins", "incorrect_answers": ["Stamps", "Tickets", "Gems"] }, { "type": "multiple", "difficulty": "hard", "category": "Geography", "question": "What is the second-largest city in Lithuania?", "correct_answer": "Kaunas", "incorrect_answers": ["Panev\u0117\u017eys", "Vilnius", "Klaip\u0117da"] }, { "type": "multiple", "difficulty": "medium", "category": "Geography", "question": "Where are the Nazca Lines located?", "correct_answer": "Peru", "incorrect_answers": ["Brazil", "Colombia", "Ecuador"] }, { "type": "multiple", "difficulty": "medium", "category": "Entertainment: Japanese Anime &amp; Manga", "question": "In the ADV (English) Dub of the anime &quot;Ghost Stories&quot;, which character is portrayed as a Pentacostal Christian?", "correct_answer": "Momoko Koigakubo", "incorrect_answers": ["Hajime Aoyama", "Satsuki Miyanoshita", "Mio Itai"] }, { "type": "multiple", "difficulty": "hard", "category": "Entertainment: Video Games", "question": "In the &quot;Devil May Cry&quot; franchise, which game is chronologically first?", "correct_answer": "Devil May Cry 3: Dante&#039;s Awakening ", "incorrect_answers": ["Devil May Cry 4", "Devil May Cry", "Devil May Cry 2"] }] }
     setGame(true)
-    setQuestionsData(data)
+  }
 
+  function nextQuestion() {
+    setQuestion(question + 1)
+  }
+
+  function prevQuestion() {
+    setQuestion(question - 1)
+  }
+
+  function reset() {
+    setQuestion(0)
+    setGame(false)
+    setQuestionData(null)
   }
 
   return (
@@ -70,36 +83,42 @@ function App() {
 
             <div className='question-header'>
               <p className='lg bold'>Quizzical</p>
-              <p className='xs'>Pregunta 1 de 3</p>
+              <p className='xs'>Pregunta {question} de {questionData?.results.length}</p>
             </div>
             <div id='rectangule' className='rounded'>
             </div>
             <div className='question-container'>
               <div>
-                <Tag difficulty='normal'>
-                  Normal
+                <Tag difficulty={questionData?.results[question - 1].difficulty}>
+                  {questionData?.results[question - 1].difficulty
+                    ? questionData.results[question - 1].difficulty.at(0)?.toUpperCase() +
+                    questionData.results[question - 1].difficulty.slice(1)
+                    : ''}
                 </Tag>
                 <Tag>
-                  Historia
+                  {questionData?.results[question - 1].category}
                 </Tag>
               </div>
-              <h1>Which painting was not made by Vincent Van Gogh?</h1>
+              <h1>{questionData?.results[question - 1].question}</h1>
             </div>
             <div className='question-answers'>
-              <Answer index={0} answer="The Starry Night" />
-              <Answer index={1} answer="The Sunflowers" />
-              <Answer index={2} answer="The Bedroom" />
-              <Answer index={3} answer="The Persistence of Memory" />
+              {questionData?.results[question - 1].incorrect_answers.map(function (answer, index) {
+                return (
+                  <Answer key={index} index={index} answer={answer} />
+                )
+              })}
+
+              <Answer index={3} answer={questionData?.results[question - 1].correct_answer ?? ''} />
             </div>
             <div className='question-buttons'>
-              <Button type='secondary'>
+              <Button onClick={prevQuestion} type='secondary' state={question > 1 ? "default" : "disabled"}>
                 Anterior
               </Button>
               <div>
-                <Button type='primary'>
-                  Siguiente
+                <Button onClick={nextQuestion} type='primary'>
+                  {question === questionData?.results.length ? "Finalizar" : "Siguiente"}
                 </Button>
-                <Button type='danger'>
+                <Button onClick={reset} type='danger'>
                   Reiniciar
                 </Button>
               </div>

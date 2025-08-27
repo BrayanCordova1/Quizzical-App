@@ -1,6 +1,6 @@
 type TagProps = {
   children?: React.ReactNode
-  difficulty?: 'easy' | 'normal' | 'hard'
+  difficulty?: 'easy' | 'medium' | 'hard'
 }
 
 export default function Tag({ children, difficulty }: TagProps) {

@@ -162,25 +162,25 @@ button
   background-color: var(--red-800);
 }
 
-.btn:disabled
-{
-  color: var(--neutral-500);
-  cursor: not-allowed;
-}
-
 .btn-primary:disabled
 {
+  color: var(--neutral-500);
   background-color: var(--blue-950);
+  cursor: not-allowed;
 }
 
 .btn-secondary:disabled
 {
+  color: var(--neutral-700);
   border-color: var(--neutral-700);
+  cursor: not-allowed;
 }
 
 .btn-danger:disabled
 {
+  color: var(--neutral-500);
   background-color: var(--red-900);
+  cursor: not-allowed;
 }
 
 .tag
@@ -189,7 +189,7 @@ button
   background-color: var(--blue-500);
 }
 
-.tag-normal
+.tag-medium
 {
   background-color: var(--yellow-400);
 }
