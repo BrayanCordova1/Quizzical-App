@@ -218,15 +218,13 @@ button
   color: var(--blue-400)
 }
 
-.answer:hover,
-.answer:focus
+.answer:hover
 {
   color: var(--neutral-50);
   background-color: var(--blue-400);
 }
 
-.answer:hover span,
-.answer:focus span
+.answer:hover span
 {
   color: var(--neutral-50)
 }
