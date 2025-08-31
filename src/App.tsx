@@ -38,6 +38,7 @@ function App() {
   }
 
   function reset() {
+    checkAnswers()
     setQuestion(0)
     setGame(false)
     setQuestionData(null)
@@ -71,6 +72,22 @@ function App() {
     ];
     return shuffleArray(allAnswers);
   }, [question, questionData]);
+
+  function checkAnswers() {
+    if (answers.length === 0) {
+      return;
+    }
+
+    questionData?.results.map(function (question, index) {
+      const isCorrect = answers[index] === question.correct_answer;
+      if (isCorrect) {
+        console.log('Correct answer for question', index + 1);
+      } else {
+        console.log('Incorrect answer for question', index + 1);
+      }
+    })
+  }
+
 
   return (
     <main className={game ? 'up' : ''}>
@@ -115,8 +132,8 @@ function App() {
               <p className='lg bold'>Quizzical</p>
               <p className='xs'>Pregunta {question} de {questionData?.results.length}</p>
             </div>
-            <span id='rectangule' className='rounded'>
-            </span>
+            <progress value={answers.length} max={questionData?.results.length} id='rectangule' className='rounded'>
+            </progress>
             <div className='question-container'>
               <div>
                 <Tag difficulty={questionData?.results[question - 1].difficulty}>
