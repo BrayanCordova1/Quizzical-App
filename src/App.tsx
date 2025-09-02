@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type SetStateAction } from 'react'
 import './App.css'
 import Button from './components/Button'
 import Tag from './components/Tag'
 import Answer from './components/Aswer'
+import Github from '../src/assets/Github.svg'
 
 function App() {
   type Question = {
@@ -19,14 +20,25 @@ function App() {
     results: Question[]
   }
 
-  const [game, setGame] = useState(true)
+  const [game, setGame] = useState(false)
+  const [finish, setFinish] = useState(false)
+  const [correctAnswer, setCorrectAnswer] = useState(0)
+  const [incorrectAnswer, setIncorrectAnswer] = useState(0)
+  const [score, setScore] = useState(0)
   const [question, setQuestion] = useState(1)
-  const [questionData, setQuestionData] = useState<QuestionsData | null>({ "response_code": 0, "results": [{ "type": "multiple", "difficulty": "easy", "category": "Entertainment: Television", "question": "Who played the Waitress in the Spam sketch of &quot;Monty Python&#039;s Flying Circus&quot;?", "correct_answer": "Terry Jones", "incorrect_answers": ["Eric Idle", "Graham Chapman", "John Cleese"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "Which character was introduced to the Super Smash Bros franchise in Super Smash Bros Melee?", "correct_answer": "Sheik", "incorrect_answers": ["Samus", "Lucas", "Mega Man"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "Who is the leader of the Brotherhood of Nod in the Command and Conquer series?", "correct_answer": "Kane", "incorrect_answers": ["Joseph Stalin", "CABAL", "Yuri"] }, { "type": "multiple", "difficulty": "hard", "category": "History", "question": "In the year 1900, what were the most popular first names given to boy and girl babies born in the United States?", "correct_answer": "John and Mary", "incorrect_answers": ["Joseph and Catherine", "William and Elizabeth", "George and Anne"] }, { "type": "multiple", "difficulty": "hard", "category": "Entertainment: Comics", "question": "What are the Three Virtues of Bionicle?", "correct_answer": "Unity, Duty, Destiny", "incorrect_answers": ["Build, Play, Change", "Work, Play, Live", "Forge, Build, Fight"] }, { "type": "multiple", "difficulty": "hard", "category": "Entertainment: Video Games", "question": "In the alternate timeline in Mortal Kombat, which character was the one to slaughter the Shirai Ryu clan?", "correct_answer": "Quan Chi", "incorrect_answers": ["Sub-Zero", "Sektor", "Shang Tsung"] }, { "type": "multiple", "difficulty": "easy", "category": "Entertainment: Video Games", "question": "Who is the main antagonist in the Portal franchise?", "correct_answer": "GLaDOS", "incorrect_answers": ["Chell", "Wheatley", "Rick"] }, { "type": "multiple", "difficulty": "hard", "category": "Geography", "question": "What city is known as the Rose Capital of the World?", "correct_answer": "Tyler, Texas", "incorrect_answers": ["San Diego, California", "Miami, Florida", "Anaheim, California"] }, { "type": "multiple", "difficulty": "easy", "category": "Sports", "question": "This Canadian television sportscaster is known for his &quot;Hockey Night in Canada&quot; role, a commentary show during hockey games.", "correct_answer": "Don Cherry", "incorrect_answers": ["Don McKellar", "Don Taylor ", "Donald Sutherland"] }, { "type": "multiple", "difficulty": "hard", "category": "Sports", "question": "Which of these Russian cities did NOT contain a stadium that was used in the 2018 FIFA World Cup?", "correct_answer": "Vladivostok", "incorrect_answers": ["Rostov-on-Don", "Yekaterinburg", "Kaliningrad"] }] })
+  const [questionData, setQuestionData] = useState<QuestionsData | null>()
   const [answers, setAnswers] = useState<string[]>([])
+  const [dificultad, setDificultad] = useState('random');
 
-  async function startGame(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
+  async function startGame(formData: any) {
+    const data = await (await fetch(`https://opentdb.com/api.php?amount=${formData.get("amount")}${formData.get("category") === "any" ? "" : "&category=" + formData.get("category")}${formData.get("difficulty") === "random" ? "" : "&difficulty=" + formData.get("difficulty")}`)).json()
+    setQuestionData(data)
     setGame(true)
+    console.log(formData.get("amount"))
+    console.log(formData.get("category"))
+    console.log(formData.get("difficulty"))
+    console.log(`https://opentdb.com/api.php?amount=${formData.get("amount")}${formData.get("category") === "any" ? "" : "&category=" + formData.get("category")}${formData.get("difficulty") === "random" ? "" : "&difficulty=" + formData.get("difficulty")}`)
+    console.log(data)
   }
 
   function nextQuestion() {
@@ -37,10 +49,15 @@ function App() {
     setQuestion(question - 1)
   }
 
-  function reset() {
+  function finishGame() {
     checkAnswers()
-    setQuestion(0)
+    setFinish(true)
+  }
+
+  function reset() {
     setGame(false)
+    setFinish(false)
+    setQuestion(0)
     setQuestionData(null)
   }
 
@@ -81,56 +98,81 @@ function App() {
     questionData?.results.map(function (question, index) {
       const isCorrect = answers[index] === question.correct_answer;
       if (isCorrect) {
-        console.log('Correct answer for question', index + 1);
+        setCorrectAnswer((prev) => prev + 1);
+        setScore((prev) => prev + 50)
       } else {
-        console.log('Incorrect answer for question', index + 1);
+        setIncorrectAnswer((prev) => prev + 1);
       }
     })
   }
 
+  const handleDificultadChange = (e: { target: { value: SetStateAction<string> } }) => {
+    setDificultad(e.target.value);
+  };
 
   return (
-    <main className={game ? 'up' : ''}>
+    <>
       {
-        !game && (
-          <>
+        !game && !finish && (
+          <main className={game && !finish ? 'up' : ''}>
             <h1>Quizzical</h1>
-            <p>Responde preguntas listas para ti. Elige el tipo, categoría y cantidad, y disfruta  poniendo a prueba tus conocimientos de forma rápida y divertida.</p>
-            <form className='rounded'>
-              <label className='base bold' htmlFor="difficulty">Dificultad:</label>
-              <select className='base bold rounded' id="difficulty">
+            <p>Answer questions prepared for you. Choose the type , category, and quantity, and enjoy testing your knowledge in a quick and fun way.</p>
+            <form className='rounded' action={startGame}>
+              <label className='base bold' htmlFor="difficulty">Difficulty:</label>
+              <select className={`base bold rounded select-${dificultad}`} id="difficulty" name='difficulty' onChange={handleDificultadChange}>
                 <option value="random">Random</option>
                 <option value="easy">Easy</option>
-                <option value="normal">Normal</option>
+                <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
               </select>
 
-              <label className='base bold' htmlFor="category">Categoría:</label>
-              <select className='base bold rounded' id="category">
-                <option value="any">Cualquiera</option>
-                <option value="general">General</option>
-                <option value="science">Ciencia</option>
-                <option value="history">Historia</option>
+              <label className='base bold' htmlFor="category">Category:</label>
+              <select className='base bold rounded' id="category" name='category'>
+                <option value="any">Any</option>
+                <option value="9">General Knowledge</option>
+                <option value="10">Entertainment: Books</option>
+                <option value="11">Entertainment: Films</option>
+                <option value="12">Entertainment: Musics</option>
+                <option value="13">Entertainment: Musicals and Theatres</option>
+                <option value="14">Entertainment: Television</option>
+                <option value="15">Entertainment: VideoGames</option>
+                <option value="16">Entertainment: BoardGames</option>
+                <option value="29">Entertainment: Comics</option>
+                <option value="31">Entertainment: Anime & Manga</option>
+                <option value="32">Entertainment: Cartoon & Animations</option>
+                <option value="17">Science & Nature</option>
+                <option value="18">Science: Computers</option>
+                <option value="19">Science: Mathematics</option>
+                <option value="30">Science: Gadgets</option>
+                <option value="20">Mythology</option>
+                <option value="21">Sports</option>
+                <option value="22">Geography</option>
+                <option value="23">History</option>
+                <option value="24">Politics</option>
+                <option value="25">Art</option>
+                <option value="26">Celebrities</option>
+                <option value="27">Animals</option>
+                <option value="28">Vehicles</option>
               </select>
 
-              <label className='base bold' htmlFor="amount">Cantidad de preguntas:</label>
-              <input className='base bold' type="number" id="amount" min="1" max="50" defaultValue="10" />
+              <label className='base bold' htmlFor="amount">Number of questions:</label>
+              <input className='base bold' type="number" id="amount" name='amount' min="1" max="50" defaultValue="10" />
 
-              <Button type='primary' htmlType='submit' onClick={startGame}>
-                Iniciar quiz
+              <Button type='primary' htmlType='submit'>
+                Start quiz
               </Button>
             </form>
-          </>
+          </main>
         )
       }
 
       {
-        game && (
-          <>
+        game && !finish && (
+          <main className={game && !finish ? 'up' : ''}>
 
             <div className='question-header'>
               <p className='lg bold'>Quizzical</p>
-              <p className='xs'>Pregunta {question} de {questionData?.results.length}</p>
+              <p className='xs'>Question {question} of {questionData?.results.length}</p>
             </div>
             <progress value={answers.length} max={questionData?.results.length} id='rectangule' className='rounded'>
             </progress>
@@ -158,21 +200,56 @@ function App() {
             </div>
             <div className='question-buttons'>
               <Button onClick={prevQuestion} type='secondary' state={question > 1 ? "default" : "disabled"}>
-                Anterior
+                Previous
               </Button>
               <div>
-                <Button onClick={question === questionData?.results.length ? reset : nextQuestion} type='primary' state={answers[question - 1] !== undefined ? "default" : "disabled"}>
-                  {question === questionData?.results.length ? "Finalizar" : "Siguiente"}
+                <Button onClick={question === questionData?.results.length ? finishGame : nextQuestion} type='primary' state={answers[question - 1] !== undefined ? "default" : "disabled"}>
+                  {question === questionData?.results.length ? "Finish" : "Next"}
                 </Button>
-                <Button onClick={reset} type='danger'>
-                  Reiniciar
+                <Button onClick={finishGame} type='danger'>
+                  Reset
                 </Button>
               </div>
             </div>
-          </>
+          </main>
         )
       }
-    </main>
+
+      {
+        game && finish && (
+          <main className={game && !finish ? 'up' : ''}>
+            <h1>Quizzical terminado</h1>
+            <div className='stats'>
+              <div>
+                <h2>Score</h2>
+                <span className='xl bold'>{score}</span>
+              </div>
+              <div>
+                <h2>Total questions</h2>
+                <span className='xl bold'>{questionData?.results.length}</span>
+              </div>
+              <div>
+                <h2>Correct answers</h2>
+                <span className='xl bold'>{correctAnswer}</span>
+              </div>
+              <div>
+                <h2>Incorrect answers</h2>
+                <span className='xl bold'>{incorrectAnswer}</span>
+              </div>
+            </div>
+            <Button onClick={reset} type='primary'>
+              Play again
+            </Button>
+          </main>
+        )
+      }
+      <footer className='base bold'>
+        <p>Creado por <a href='https://brayan-cordova.vercel.app/' target='_blank' rel='noopener noreferrer'>Brayan Cordova</a></p>
+        <a href='https://github.com/BrayanCordova1/Quizzical-App' target='_blank' rel='noopener noreferrer'>
+          <img src={Github} alt='GitHub' />
+        </a>
+      </footer>
+    </>
   )
 }
 

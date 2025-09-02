@@ -96,6 +96,24 @@ main
   justify-content: center;
   gap: 16px;
   height: 100%;
+  padding: 0 12px;
+}
+
+footer
+{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px
+}
+
+footer a
+{
+  color: var(--blue-500);
+}
+
+footer a:hover
+{
+  color: var(--blue-600);
 }
 
 /* --- Components --- */
@@ -270,10 +288,30 @@ select
   background-size: 1.2em 1.2em;
 }
 
+.select-easy
+{
+  color: var(--green-500);
+}
+
+.select-medium
+{
+  color: var(--yellow-400);
+}
+
+.select-hard
+{
+  color: var(--red-500);
+}
+
 select:focus
 {
   outline: none;
   border-color: var(--neutral-500);
+}
+
+#difficulty option[value="random"]
+{
+  color: var(--neutral-50);
 }
 
 #difficulty option[value="easy"]
@@ -281,7 +319,7 @@ select:focus
   color: var(--yellow-400);
 }
 
-#difficulty option[value="normal"]
+#difficulty option[value="medium"]
 {
   color: var(--green-500);
 }
@@ -392,6 +430,23 @@ progress::-webkit-progress-value
   transition: width 0.4s ease;
 }
 
+/* --- Finish Game --- */
+.stats
+{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  text-align: left;
+  gap: 28px;
+  width: 100%;
+}
+
+.stats div
+{
+  flex-direction: column;
+  border-bottom: 1px dashed var(--neutral-700);
+}
+
 /* --- Media Queries for Typography & Utilities --- */
 @media (min-width: 48rem)
 {
@@ -407,7 +462,16 @@ progress::-webkit-progress-value
 
   main
   {
+    padding: 0 56px;
     gap: 24px;
+  }
+
+  .stats div
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
@@ -465,6 +529,7 @@ progress::-webkit-progress-value
 
   main
   {
+    padding: 0 40px;
     gap: 28px;
   }
 }
@@ -529,5 +594,10 @@ progress::-webkit-progress-value
   .question-answers
   {
     gap: 32px;
+  }
+
+  main
+  {
+    padding: 0 56px;
   }
 }
