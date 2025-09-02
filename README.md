@@ -6,7 +6,7 @@ Una aplicación web de trivias y preguntas interactiva y divertida, construida c
 
 **[➡️ Ver web](https://quizzical-go.vercel.app/)**
 
-![Screenshot of Quizzical App](https://imgur.com/a/Ph9FbNI)
+![Screenshot of Quizzical App](https://i.imgur.com/98pwab3.png)
 
 ## 📝 Descripción
 
